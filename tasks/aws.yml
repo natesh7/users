@@ -1,0 +1,22 @@
+---
+  - name: Add .aws directory for each user
+    file:
+      path: "{{ (item == 'root') | ternary('/root', '/home/' + item) + '/.aws' }}"
+      state: directory
+      mode: 0700
+      owner: "{{ item }}"
+      group: "{{ item }}"
+    with_items:
+      - root
+      - "{{ flex_users_enabled }}"
+
+  - name: Add awscli config
+    template:
+      src: templates/aws-config.yml.j2
+      dest: "{{ (item == 'root') | ternary('/root', '/home/' + item) + '/.aws/config' }}"
+      owner: "{{ item }}"
+      group: "{{ item }}"
+      mode: 0700
+    with_items:
+      - root
+      - "{{ flex_users_enabled }}"

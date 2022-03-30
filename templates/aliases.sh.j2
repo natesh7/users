@@ -1,0 +1,13 @@
+{% if hostctl_aliases_path is defined %}
+# load up global system-wide aliases
+if [ -e {{ hostctl_aliases_path }} ]; then
+  for mod in {{ hostctl_aliases_path }}/*; do
+      test -f ${mod} && source ${mod}
+  done
+fi
+{% endif %}
+
+# load up custom aliases
+if [ -f ~/.bash_aliases_private ]; then
+    . ~/.bash_aliases_private
+fi

@@ -1,0 +1,10 @@
+---
+  - import_tasks: add_users.yml
+  - import_tasks: remove_users.yml
+
+  - name: install host control utility
+    import_role:
+      name: hostctl
+
+  - import_tasks: aws.yml
+    when: aws_region is defined

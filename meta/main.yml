@@ -1,0 +1,18 @@
+---
+dependencies:
+  - src: git@bitbucket.org:ooyalaflex/ansible-hostctl
+    scm: git
+    name: hostctl
+galaxy_info:
+  role_name: ansible-users
+  author: Flex SRE Team
+  description: provision ansible users based on defined group
+  company: Ooyala
+  license: Ooyala
+  min_ansible_version: 2.7.4
+  platforms:
+   - name: Ubuntu
+     versions:
+     - 16.04
+     - 18.04
+  galaxy_tags: []

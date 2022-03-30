@@ -1,0 +1,24 @@
+---
+  - name: dynamically create list of disabled users
+    set_fact:
+      flex_users_disabled: "{{ flex_users_disabled }} + {{ item.users | default([]) | flatten(levels=1) }}"
+    loop: "{{ flex_users_list }}"
+    when: not item.enabled
+
+  - name: Remove users
+    user:
+      name: "{{ item }}"
+      state: absent
+      remove: yes
+    with_items: "{{ flex_users_disabled }}"
+
+  - name: Remove sudoers files
+    file:
+      dest: "/etc/sudoers.d/{{ item }}"
+      state: absent
+    with_items: "{{ flex_users_disabled }}"
+
+  - name: Remove legacy sudoers file
+    file:
+      dest: "/etc/sudoers.d/20-ooyala"
+      state: absent

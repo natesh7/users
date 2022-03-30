@@ -1,0 +1,167 @@
+---
+# defaults file for add-users
+service_users_enabled: true
+service_users:
+  - em_jenkins
+  - jenkins
+
+sre_users_enabled: true
+sre_users:
+  - krutarthr
+  - lspiteri
+  - olockwood
+  - prem_
+  - naveen
+  - irizzari
+
+ms_users_enabled: true
+ms_users:
+  - aduchatel
+  - bzores
+  - dzhiglov
+  - jgrondin
+  - lenko
+  - lrittie
+  - mbertin
+  - mnikolov
+  - nsharan
+  - roma
+  - rquillo
+  - serin
+  - smaubian
+
+dev_users_enabled: false
+dev_users:
+  - asite
+  - marcdefaria
+  - nsmith
+  - wchuang
+
+ps_users_enabled: false
+ps_users:
+  - ajambon
+  - arosales
+  - bchambers
+  - bzhang
+  - cwang
+  - dshayesteh
+  - edaci
+  - epogace
+  - fmanier
+  - ggay
+  - hugotalbot
+  - jpenven
+  - jplanchot
+  - karumugam
+  - kpatel
+  - ljardin
+  - mjasserand
+  - msoloviova
+  - mgalperin
+  - naren
+  - okurash
+  - probertsonsmith
+  - sandeep
+  - sdiksha
+  - skhan
+  - simon
+  - tmacahyba
+  - tsubreville
+
+flex_solutions_users_enabled: false
+flex_solutions_users:
+  - mattcarter
+  - mzarouk
+  - sgibson
+
+solutions_users_enabled: false
+solutions_users: []
+
+se_users_enabled: false
+se_users:
+  - abouraly
+  - apaezmartin
+  - isharifkhan
+  - krubinow
+
+old_users:
+  - alangarcia
+  - alfredo
+  - ankit
+  - apappalardo
+  - aram
+  - artem
+  - atsvetkov
+  - bhakki
+  - bhushan
+  - bill
+  - brian
+  - cescamilla
+  - cpage
+  - dlinares
+  - dshtaltovnyi
+  - emily
+  - esingaraj
+  - etoulain
+  - fer
+  - gscurr
+  - hsolis
+  - igor
+  - illia
+  - jackw
+  - janakt
+  - jho
+  - jnash
+  - jose.franco
+  - kapild
+  - karthy
+  - kate
+  - kmiyazaki
+  - luisangel
+  - mandy
+  - maxnyman
+  - mboldysh
+  - mbottini
+  - mhernandez
+  - mortega
+  - mrebel
+  - pere
+  - pert
+  - pmorales
+  - prithak
+  - rmezhibovski
+  - rmundkur
+  - rogerio
+  - rowan
+  - rshylov
+  - sathish
+  - sathya
+  - serhii
+  - shankar
+  - shreya
+  - solid
+  - soroush
+  - spandey
+  - stevenluong
+  - tallen
+  - tommyng
+  - vaidee
+  - vmathappan
+  - wdbruyne
+
+###################################
+# Internal listing variables-only #
+###################################
+
+flex_users_list:
+ - { users: "{{ service_users }}",        enabled: "{{ service_users_enabled }}" }
+ - { users: "{{ sre_users }}",            enabled: "{{ sre_users_enabled }}" }
+ - { users: "{{ ms_users }}",             enabled: "{{ ms_users_enabled }}" }
+ - { users: "{{ dev_users }}",            enabled: "{{ dev_users_enabled }}" }
+ - { users: "{{ ps_users }}",             enabled: "{{ ps_users_enabled }}" }
+ - { users: "{{ flex_solutions_users }}", enabled: "{{ flex_solutions_users_enabled }}" }
+ - { users: "{{ solutions_users }}",      enabled: "{{ solutions_users_enabled }}" }
+ - { users: "{{ se_users }}",             enabled: "{{ se_users_enabled }}" }
+
+flex_users_enabled: "{{ extra_users | default([]) }}"
+flex_users_disabled: "{{ old_users | default([]) }}"

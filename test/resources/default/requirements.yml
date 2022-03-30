@@ -1,0 +1,3 @@
+- src: git@bitbucket.org:ooyalaflex/ansible-hostctl.git
+  scm: git
+  name: hostctl

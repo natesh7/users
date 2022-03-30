@@ -1,0 +1,7 @@
+---
+- hosts: all
+  any_errors_fatal: true
+  become: yes
+  gather_facts: yes
+  roles:
+    - ansible-users

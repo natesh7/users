@@ -1,0 +1,97 @@
+---
+  - name: Add docker group
+    group:
+      name: docker
+      state: present
+
+  - name: dynamically create list of enabled users
+    set_fact:
+      flex_users_enabled: "{{ flex_users_enabled }} + {{ item.users | default([]) | flatten(levels=1) }}"
+    loop: "{{ flex_users_list }}"
+    when: item.enabled
+
+  - name: Add Users
+    user:
+      name: "{{ item }}"
+      shell: /bin/bash
+      groups: docker
+      append: yes
+      state: present
+      createhome: yes
+    with_items: "{{ flex_users_enabled }}"
+
+  - name: Add flex group
+    group:
+      name: flex
+      gid: 1099
+      state: present
+
+  - name: Adding flex user to docker and flex groups
+    user:
+      name: flex
+      shell: /bin/bash
+      uid: 1099
+      groups: "docker,flex"
+      append: yes
+      
+  - name: Add .ssh directory for each user
+    file:
+      path: "/home/{{ item }}/.ssh"
+      state: directory
+      mode: 0700
+      owner: "{{ item }}"
+      group: "{{ item }}"
+    with_items: "{{ flex_users_enabled }}"
+
+  - name: Copy SSH authorized_keys for all users
+    copy:
+      src: "authorized_keys/{{ item }}"
+      dest: "/home/{{ item }}/.ssh/authorized_keys"
+      owner: "{{ item }}"
+      group: "{{ item }}"
+      mode: 0700
+      backup: no
+    with_items: "{{ flex_users_enabled }}"
+
+  - name: add shell aliases
+    template:
+      src: aliases.sh.j2
+      dest: "/home/{{ item }}/.bash_aliases"
+      owner: "{{ item }}"
+      group: "{{ item }}"
+      mode: 0664
+      backup: yes
+    with_items: "{{ flex_users_enabled }}"
+
+  - name: Add sudoers files
+    template:
+      src: sudoers.j2
+      dest: "/etc/sudoers.d/{{ item }}"
+      owner: root
+      group: root
+      mode: 0440
+      backup: no
+    with_items: "{{ flex_users_enabled }}"
+
+  - name: Create .docker directory
+    file:
+      path: "{{ (item == 'root') | ternary('/root', '/home/' + item) + '/.docker' }}"
+      state: directory
+      mode: 0770
+      owner: "{{ item }}"
+      group: "{{ item }}"
+    with_items:
+      - root
+      - "{{ flex_users_enabled }}"
+
+  - name: Copy docker registry login details
+    copy:
+      src: dockercfg
+      dest: "{{ (item == 'root') | ternary('/root', '/home/' + item) + '/.docker/config.json' }}"
+      owner: "{{ item }}"
+      group: "{{ item }}"
+      mode: 0700
+      backup: no
+    with_items:
+      - root
+      - "{{ flex_users_enabled }}"
