@@ -1,4 +1,6 @@
 ---
+  vars:
+    - flex_users_comments_dict: {}
   - name: Add docker group
     group:
       name: docker
@@ -10,15 +12,34 @@
     loop: "{{ flex_users_list }}"
     when: item.enabled
 
+
+  - name: dynamically create list of enabled users
+    set_fact:
+      flex_users_comments_dict: "{{ flex_users_comments_dict | combine({user: {{ item.users }}, comments: {{ item.comments }} } ) }}"
+    loop: "{{ flex_users_list }}"
+    when: item.enabled
+
   - name: Add Users
+    user:
+      name: "{{ item.user }}"
+      shell: /bin/bash
+      groups: docker
+      comments: "{{ item.comments }}"
+      append: yes
+      state: present
+      createhome: yes
+    with_dict: "{{ flex_users_comments_dict }}"
+
+  - name: Add Extra Users
     user:
       name: "{{ item }}"
       shell: /bin/bash
       groups: docker
+      comments: "EXTRA_USER_GROUP"
       append: yes
       state: present
       createhome: yes
-    with_items: "{{ flex_users_enabled }}"
+    with_dict: "{{ flex_users_enabled }}"
 
   - name: Add flex group
     group:

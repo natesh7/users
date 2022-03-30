@@ -154,14 +154,14 @@ old_users:
 ###################################
 
 flex_users_list:
- - { users: "{{ service_users }}",        enabled: "{{ service_users_enabled }}" }
- - { users: "{{ sre_users }}",            enabled: "{{ sre_users_enabled }}" }
- - { users: "{{ ms_users }}",             enabled: "{{ ms_users_enabled }}" }
- - { users: "{{ dev_users }}",            enabled: "{{ dev_users_enabled }}" }
- - { users: "{{ ps_users }}",             enabled: "{{ ps_users_enabled }}" }
- - { users: "{{ flex_solutions_users }}", enabled: "{{ flex_solutions_users_enabled }}" }
- - { users: "{{ solutions_users }}",      enabled: "{{ solutions_users_enabled }}" }
- - { users: "{{ se_users }}",             enabled: "{{ se_users_enabled }}" }
+ - { users: "{{ service_users }}",        enabled: "{{ service_users_enabled }}",       comments: "SERVICE_USER_GROUP" }
+ - { users: "{{ sre_users }}",            enabled: "{{ sre_users_enabled }}",           comments: "SRE_USER_GROUP" }
+ - { users: "{{ ms_users }}",             enabled: "{{ ms_users_enabled }}",            comments: "SERVICE_USER_GROUP" }
+ - { users: "{{ dev_users }}",            enabled: "{{ dev_users_enabled }}",           comments: "SERVICE_USER_GROUP" }
+ - { users: "{{ ps_users }}",             enabled: "{{ ps_users_enabled }}",            comments: "SERVICE_USER_GROUP" }
+ - { users: "{{ flex_solutions_users }}", enabled: "{{ flex_solutions_users_enabled }}",comments: "SERVICE_USER_GROUP" }
+ - { users: "{{ solutions_users }}",      enabled: "{{ solutions_users_enabled }}",     comments: "SERVICE_USER_GROUP" }
+ - { users: "{{ se_users }}",             enabled: "{{ se_users_enabled }}",            comments: "SERVICE_USER_GROUP" }
 
 flex_users_enabled: "{{ extra_users | default([]) }}"
 flex_users_disabled: "{{ old_users | default([]) }}"
